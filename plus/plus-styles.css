@@ -1,0 +1,89 @@
+.plus-1 {
+    position: relative;
+    height: 150px;
+    background-color: var(--dark-not-black);
+}
+.plus-1 img {
+    position: absolute;
+    top: 25px;
+    left: 10%;
+}
+.plus-1 h1 {
+    position: absolute;
+    top: 0%;
+    left: calc(10% + 100px);
+    color: var(--green);
+}
+.plus-1 p {
+    position: absolute;
+    top: 80px;
+    margin-right: 5%;
+    left: calc(10% + 100px);
+}
+.plus-2 {
+    display: flex;
+    background-color: var(--not-quite-black);
+    position: sticky;
+    top: 0;
+    z-index: 120;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 5vw;
+    flex-direction: row;
+}
+.subscribe-btn:before {
+    position: absolute;
+    content: "";
+    background-color: white;
+    filter: opacity(0.3);
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transform: translateX(-300px) rotateZ(20deg);
+    width: 150%;
+    height: 100%;
+    animation: shineAnimation 2s infinite ease-in-out;
+}
+@keyframes shineAnimation {
+    0% {
+        transform: translateX(-300px) rotateZ(20deg);
+    }
+    50% {
+        transform: translateX(200px) rotateZ(20deg);
+    }
+    100% {
+        transform: translateX(200px) rotateZ(20deg);
+    }
+}
+.subscribe-btn {
+    position: relative;
+    font-size: 24px;
+    z-index: 0;
+    overflow: hidden;
+    background-color: var(--success);
+    transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
+}
+.subscribe-btn:hover {
+    background-color: var(--success-dark);
+}
+.plus-3 {
+    display: flex;
+    background-color: var(--dark-not-black);
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+.plus-3 > .permissionsList {
+    width: calc(100% - 10vw);
+}
+a:not(.btn) {
+    color: var(--green);
+    font-weight: bold;
+}
+
+@media screen and (max-width: 850px) {
+    .plus-2 {
+        flex-direction: column;
+    }
+}
