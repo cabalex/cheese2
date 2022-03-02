@@ -4,7 +4,6 @@ import Stats from '../stats.module.js';
 import { loadGLTF, loadTexture, GLTFtoConvexPolyhedron, setupScene } from '../core.js';
 
 const endpoint = 'https://cheese2api.azurewebsites.net/api';
-const endpointEnd = '?code=ucmgL83NtE4jYiuiupQG9BjXNaUGTth0QGy6umWegi9XcyFFxGXWHg==';
 
 const cupZOffset = 18;
 const cupPositions10 = [
@@ -100,7 +99,7 @@ class CupPongApp {
     async connectToServer() {
         if (!this.gameID || !this.userID) throw new Error('No Game ID or User specified');
 
-        let resp = await fetch(`${endpoint}/fetchSession/${this.gameID}/${this.userID}${endpointEnd}`).catch(() => {})
+        let resp = await fetch(`${endpoint}/fetchSession/${this.gameID}/${this.userID}`).catch(() => {})
 
         if (!resp.ok) throw new Error(resp.status.toString());
 
@@ -198,7 +197,7 @@ class CupPongApp {
             return;
         }
 
-        let resp = await fetch(`${endpoint}/updateSession/${this.gameID}/${this.userID}/${endpointEnd}`, {
+        let resp = await fetch(`${endpoint}/updateSession/${this.gameID}/${this.userID}`, {
             method: 'POST',
             body: JSON.stringify({
                 activeCups: this.selfData.activeCups.map(cup => cup.userData.index),
