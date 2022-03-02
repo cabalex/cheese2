@@ -143,8 +143,8 @@ class CupPongApp {
 
         // update opponent cup locations
         this.opponentData.activeCups = this.opponentData.activeCups.filter((cup, index) => {
-            // CupsHit means the cup will be removed as the animation plays
-            if (!json.data.activeCups.includes(parseInt(cup.userData.index)) && !json.data.cupsHit.includes(parseInt(cup.userData.index))) {
+            // CupsHit means the cup will be removed as the animation plays - WIP
+            if (!json.data.activeCups.includes(parseInt(cup.userData.index))) { //&& !json.data.cupsHit.includes(parseInt(cup.userData.index))) {
                 this.scene.remove(cup);
                 this.world.removeBody(cup.body);
                 return false;
@@ -768,6 +768,8 @@ class CupPongApp {
     };
 
 }
+
+document.addEventListener('touchmove', (event) => {event.preventDefault()}, {passive: false});
 
 window.onload = function() {
     new CupPongApp(...setupScene());
