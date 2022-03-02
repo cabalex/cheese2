@@ -446,7 +446,7 @@ hr {
     #add { background-color: var(--success) }
     #add:hover { background-color: var(--success-dark) }
     #add > .material-icons { display: inline-block !important }
-    #viewsource {
+    #plus {
         display: none;
     }
     #contact {
