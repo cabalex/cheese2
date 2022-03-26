@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, user-scalable=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@500;700;900&display=swap" rel="stylesheet">
+    <title>Cheese2 - Anagrams</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Work Sans', Arial, sans-serif;
+            overflow: hidden;
+            background-color: #23272a;
+            -webkit-tap-highlight-color: transparent;
+        }
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        .modal-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 20px;
+            transform: translate(-50%, -50%);
+            width: calc(100% - 50px);
+            max-width: 500px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .modal-inner .material-icons {
+            font-size: 50px;
+            user-select: none;
+            vertical-align: middle;
+        }
+        #connecting .material-icons, #waiting .material-icons {
+            animation: loading 1s ease-in-out infinite;
+        }
+        #sent .material-icons {
+            animation: sent 0.5s ease-in-out;
+            overflow: hidden;
+        }
+        @keyframes sent {
+            0% {
+                transform: translateY(20px);
+                width: 1px;
+                margin-right: 49px;
+                opacity: 0;
+                color: black;
+            }
+            90% {
+                transform: translateY(-5px);
+                width: 50px;
+                margin-right: 0;
+            }
+            100% {
+                width: 50px;
+            }
+        }
+        @keyframes loading {
+            0% {
+                transform: rotate(90deg);
+                color: black;
+            }
+            50% {
+                color: red;
+            }
+            100% {
+                transform: rotate(810deg);
+                color: black;
+            }
+        }
+        #waiting { display: none }
+        #nogame { display: none }
+        #sent { display: none }
+        #won { display: none; background-color: green; color: white; }
+        #lost { display: none; background-color: red; color: white; }
+        .anagrams-body {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, 5%);
+            width: 100%;
+            max-width: 500px;
+            height: 90%;
+
+            text-align: center;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        @media screen and (max-width: 500px) {
+            .anagrams-body {
+                border-radius: 0;
+            }
+        }
+        .anagrams-score {
+            background-color: #ccc;
+            flex-grow: 0;
+            width: 100%;
+            border-radius: 5px;
+            display: flex;
+            margin-bottom: auto;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .anagrams-score > * {
+            margin: 5px;
+        }
+
+        #time {
+            background-color: #5865F2;
+            border-radius: 100px;
+            font-size: 32px;
+            padding: 10px;
+            color: white;
+        }
+        #letterSlots, #letters {
+            display: flex;
+            flex-grow: 0;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 70px;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .letterSlot, .letter {
+            outline: 1px solid #ccc;
+            height: 70px;
+            width: 70px;
+            border-radius: 5px;
+        }
+        .letter {
+            background-color: #5865F2;
+            color: white;
+            outline: 1px solid black;
+            box-shadow: 0 0 5px black;
+            user-select: none;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out;
+        }
+        #anagrams-initial, #anagrams-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            height: calc(100% - 20px);
+            margin: 10px;
+        }
+        #anagrams-game {
+            justify-content: center;
+        }
+        .btn {
+            font-size: 30px;
+            background-color: #5865F2;
+            border-radius: 100px;
+            padding: 10px 20%;
+            color: white;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            user-select: none;
+        }
+        #startGame:hover {
+            background-color: #4A5DF2;
+        }
+        .popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            text-align: center;
+            transform: translate(-50%, 0);
+            font-size: 28px;
+            animation: popup 1s ease-in;
+            animation-fill-mode: forwards;
+        }
+        @keyframes popup {
+            0% {
+                transform: translate(-50%, 0px);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -20vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="modal">
+        <div class="modal-inner" id="connecting"><span class="material-icons">autorenew</span> Connecting to server...
+            <p style="border-top: 1px solid black; padding-top: 5px; font-size: 12px">ANAGRAMS - A <a href="../../">Cheese2</a> game</p>
+        </div>
+        <div class="modal-inner" id="waiting"><span class="material-icons">autorenew</span> Waiting for opponent...
+            <p style="border-top: 1px solid black; padding-top: 5px; font-size: 12px">ANAGRAMS - A <a href="../../">Cheese2</a> game</p>
+        </div>
+        <div class="modal-inner" id="sent"><span class="material-icons">check</span> <b>Sent.</b> Check Discord for scores!</div>
+        <div class="modal-inner" id="nogame"><span class="material-icons">warning</span> Couldn't connect to this game.
+            <ul>
+                <li>Make sure the URL is correct.</li>
+                <li>Make sure your content blockers aren't blocking the server.</li>
+                <li>Try remaking the game on <a href="../../">Cheese2</a>.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="anagrams-body">
+        <div id="anagrams-initial">
+            <h1 style="font-size: 50px">ANAGRAMS</h1>
+            <h2>Rearrange the letters to make words and gain points in 60 seconds. Gain more points than your opponents to win!</h2>
+            <div class="btn" id="startGame">Start</div>
+        </div>
+        <div id="anagrams-game">
+            <div class="anagrams-score">
+                <h2>
+                    <span id="words">0</span>
+                    WORDS
+                </h2>
+                <h1 style="font-size: 52px">
+                    <span id="score">0</span>
+                    <span style="font-size: 24px">pts</span>
+                </h1>
+                <h2 id="time">1:00</h2>
+            </div>
+            <div class="btn" id="submitWord">SEND</div>
+            <div id="letterSlots"></div>
+            <div id="letters"></div>
+        </div>
+        
+    </div>
+    <script src="anagrams.js" type="module"></script>
+</body>
+</html>
