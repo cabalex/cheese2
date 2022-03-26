@@ -141,6 +141,12 @@ class AnagramsApp {
             // remove it from the current letter placement
             this.currentLetterPlacement.splice(this.currentLetterPlacement.indexOf(letter), 1);
             letter.style.transform = '';
+
+            this.currentLetterPlacement.forEach(lt => {
+                let ltindex = parseInt(lt.id.split('-')[1]);
+                let ltIndexInArray = this.currentLetterPlacement.indexOf(lt);
+                lt.style.transform = `translateY(-90px) translateX(${(ltIndexInArray - ltindex) * screenPos}px)`;
+            })
         }
 
         if (this.currentLetterPlacement.length > 1) {
