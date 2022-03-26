@@ -61,7 +61,7 @@ class AnagramsApp {
 
         if (resp) {
             let text = await resp.text();
-            this.words = text.split('\r\n');
+            this.words = text.replace('\r', '').split('\n');
         } else {
             this.words = [];
         }
