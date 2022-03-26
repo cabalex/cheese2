@@ -111,11 +111,8 @@ class AnagramsApp {
             document.getElementById('nogame').style.display = 'block';
             return;
         }
-        if (!resp.ok) {
-            if (resp.status !== 400) {
-                setTimeout(this.sendOut.bind(this), 3000);
-            }
-            return;
+        if (!resp.ok && resp.status !== 400) {
+            setTimeout(this.sendOut.bind(this), 3000);
         } else {
             document.getElementById('waiting').style.display = 'none';
             document.getElementById('sent').style.display = 'block';
