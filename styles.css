@@ -22,6 +22,8 @@ body, html {
     font-family: 'Work Sans', sans-serif;
     color: var(--white);
     margin: 0;
+    height: 100%;
+    overflow: auto;
 }
 body:not(.header) {
     overflow-x: hidden;
@@ -39,9 +41,12 @@ h2 { font-size: 40px }
 h3 { font-size: 30px }
 h4 { font-size: 24px; margin: 10px 0 0 0; }
 h5 { font-size: 20px; margin: 0 }
+.flavor-text { font-style: italic; display: block; margin-top: 10px; color: var(--grey) }
+.notfound { background-color: transparent !important }
 .btn {
     padding: 10px;
     display: flex;
+    align-items: center;
     font-weight: 100;
     gap: 5px;
     background-color: var(--primary);
@@ -79,7 +84,7 @@ h5 { font-size: 20px; margin: 0 }
     background-color: transparent;
     padding: 20px;
     top: 0;
-    height: calc(100vh - 90px);
+    height: calc(100% - 90px);
 }
 .section-1 h1 {
     position: absolute;
